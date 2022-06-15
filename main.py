@@ -55,7 +55,20 @@ class Books(Resource):  # наследява class Resource ot flask restful
         return {"books": [book.__dict__ for book in books]}
 
 
+class Book(Resource):
+    def _get_book(self, pk):
+        try:
+            return [b for b in books if b.pk == pk][0]
+        except IndexError:
+            return None
+
+    def get(self, pk):
+        book = [b for b in books if b.pk == pk][0]
+        return book.__dict__
+
+
 api.add_resource(Books, "/books/")   # Zakachame na endpoint /books  class Books chrez api.
+api.add_resource(Book, "/books/<int:pk>")
 
 if __name__ == '__main__':    # za da startirame flask syrwyrcheto
 
