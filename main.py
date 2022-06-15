@@ -63,8 +63,18 @@ class Book(Resource):
             return None
 
     def get(self, pk):
-        book = [b for b in books if b.pk == pk][0]
+        book = self._get_book(pk)
+        if not book:
+            return "Book does not exist"
         return book.__dict__
+
+    def put(self, pk):
+        book = self._get_book(pk)
+        if not book:
+            return "Book does not exist"
+        data = request.get_json()
+        book.title = data.get("title")
+        book.author = data.get("author")
 
 
 api.add_resource(Books, "/books/")   # Zakachame na endpoint /books  class Books chrez api.
