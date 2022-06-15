@@ -75,7 +75,13 @@ class Book(Resource):
         data = request.get_json()
         book.title = data.get("title")
         book.author = data.get("author")
+        return book.__dict__
 
+    def delete(self, pk):
+        book = self._get_book(pk)
+        if not book:
+            return "Book does not exist"
+        books.remove(book)
 
 api.add_resource(Books, "/books/")   # Zakachame na endpoint /books  class Books chrez api.
 api.add_resource(Book, "/books/<int:pk>")
