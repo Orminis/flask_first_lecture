@@ -18,7 +18,7 @@
 #     app.run()
 
 
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Resource, Api
 '''В фласк не закачаме декоратори  а използваме апи обект '''
 app = Flask(__name__)
@@ -49,7 +49,8 @@ class Books(Resource):  # наследява class Resource ot flask restful
         return {"books": [book.__dict__ for book in books]}  # сирилизира от речник към JSON
 
     def post(self):     # добавяне на книга
-        book = BookModel(title="Test1", author="Author test 1")
+        data = request.get_json()   # request получава заявка от сървъра с json информация и я предава за обработка
+        book = BookModel(title=data.get("title"), author=data.get("author"))
         books.append(book)
         return {"books": [book.__dict__ for book in books]}
 
