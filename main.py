@@ -34,7 +34,7 @@ class BookModel:
         self.author = author
         BookModel._pk += 1
 
-    def serialize(self):    # превръща стринговата репрезентанрия към речник
+    def serialize(self):    # превръща стринговата репрезентанрия към речник който фласк да подаде като json
         return self.__dict__
 
     def __str__(self):
@@ -47,6 +47,11 @@ books = [BookModel(f"Title {i}", f"Author {i}") for i in range(1, 11)]
 class Books(Resource):  # наследява class Resource ot flask restful
     def get(self):      # predefinirame metod get ot flaskrestful
         return {"books": [book.__dict__ for book in books]}  # сирилизира от речник към JSON
+
+    def post(self):     # добавяне на книга
+        book = BookModel(title="Test1", author="Author test 1")
+        books.append(book)
+        return {"books": [book.__dict__ for book in books]}
 
 
 api.add_resource(Books, "/")   # Zakachame na endpoint /  class Books chrez api.
